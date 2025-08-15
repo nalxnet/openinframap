@@ -158,6 +158,58 @@ export default function layers(): LayerSpecificationWithZIndex[] {
       }
     },
     {
+      zorder: 160,
+      id: 'petroleum_substation',
+      type: 'fill',
+      filter: substation_visible_p,
+      source: 'petroleum',
+      'source-layer': 'petroleum_substation',
+      minzoom: 13,
+      paint: {
+        'fill-opacity': 0.3,
+        'fill-color': colour_oil
+      }
+    },
+    {
+      zorder: 161,
+      id: 'petroleum_substation_outline',
+      type: 'line',
+      filter: substation_visible_p,
+      source: 'petroleum',
+      'source-layer': 'petroleum_substation',
+      minzoom: 13,
+      paint: {
+        'line-color': 'rgba(0, 0, 0, 1)',
+        'line-opacity': 0.8,
+        'line-width': interpolate(zoom, [
+          [13, 0.5],
+          [20, 4]
+        ])
+      }
+    },
+    {
+      zorder: 260,
+      id: 'petroleum_substation_point',
+      type: 'circle',
+      filter: all(substation_visible_p, substation_point_visible_p),
+      source: 'petroleum',
+      'source-layer': 'petroleum_substation_point',
+      minzoom: 5,
+      layout: {},
+      paint: {
+        'circle-radius': substation_radius,
+        'circle-color': voltage_color('voltage'),
+        'circle-stroke-color': ['interpolate-hcl', ['linear'], zoom, 8, '#eee', 12, '#333'],
+        'circle-stroke-width': interpolate(zoom, [
+          [5, 0],
+          [8, 0.5],
+          [20, 2]
+        ]),
+        'circle-opacity': power_opacity,
+        'circle-stroke-opacity': power_opacity
+      }
+    },
+    {
       zorder: 500,
       id: 'petroleum_pipeline_label',
       type: 'symbol',
@@ -206,7 +258,52 @@ export default function layers(): LayerSpecificationWithZIndex[] {
         'text-size': 10
       },
       paint: text_paint
-    }
+    },
+    {
+      zorder: 562,
+      id: 'petroleum_substation_ref_label',
+      type: 'symbol',
+      filter: substation_label_visible_p,
+      source: 'petroleum',
+      'source-layer': 'petroleum_substation_point',
+      minzoom: 14.5,
+      layout: {
+        'symbol-z-order': 'source',
+        'text-field': '{ref}',
+        'text-font': font,
+        'text-anchor': 'bottom',
+        'text-offset': [0, -0.5],
+        'text-size': interpolate(zoom, [
+          [14, 9],
+          [21, 14]
+        ]),
+        'text-max-width': 8
+      },
+      paint: text_paint
+    },
+    {
+      zorder: 562,
+      id: 'petroleum_substation_label',
+      type: 'symbol',
+      source: 'petroleum',
+      filter: substation_label_visible_p,
+      'source-layer': 'petroleum_substation_point',
+      minzoom: 8,
+      layout: {
+        'symbol-sort-key': ['-', 10000, voltage],
+        'symbol-z-order': 'source',
+        'text-field': substation_label,
+        'text-font': font,
+        'text-variable-anchor': ['top', 'bottom'],
+        'text-radial-offset': 0.8,
+        'text-size': interpolate(zoom, [
+          [8, 10],
+          [18, 16],
+        ]),
+        'text-max-width': 8
+      },
+      paint: text_paint
+    },
   ]
 }
 

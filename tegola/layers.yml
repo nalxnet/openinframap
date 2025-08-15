@@ -513,6 +513,34 @@ layers:
     field_sets: [geom, name, start_date]
     from: osm_petroleum_site
     where: geometry && !BBOX!
+  
+  - name: petroleum_substation
+    map:
+      - openinframap
+      - petroleum
+    geometry_type: Polygon
+    min_zoom: 13
+    field_sets: [geom, name, start_date]
+    fields:
+      - name: substation
+      - name: location
+        sql: tags -> 'location'
+    id_field: osm_id
+    from: osm_petroleum_substation
+    where: geometry && !BBOX!
+
+  - name: petroleum_substation_point
+    map:
+      - openinframap
+      - petroleum
+    geometry_type: Point
+    min_zoom: 10
+    field_sets: [geom_centroid, area, name, start_date]
+    fields:
+      - name: substation
+    id_field: osm_id
+    from: osm_petroleum_substation
+    where: geometry && !BBOX!
 
   - name: water_pipeline
     map:

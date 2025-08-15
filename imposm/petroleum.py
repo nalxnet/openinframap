@@ -36,17 +36,25 @@ table(
             "well_cluster",
             "refinery",
         ],
-        "pipeline": ["substation"],
     },
     "polygon",
     columns=[type_col, str_col("name")],
 )
 
 table(
+    "petroleum_substation",
+    {
+        "pipeline": ["substation"],
+    }
+    ["points", "polygon"],
+    columns=[type_col, str_col("substance"), str_col("substation")],
+)
+
+table(
     "pipeline_feature",
     {"pipeline": ["valve", "flare"]},
     "point",
-    columns=[type_col],
+    columns=[type_col, str_col("diameter")],
 )
 
 table(
